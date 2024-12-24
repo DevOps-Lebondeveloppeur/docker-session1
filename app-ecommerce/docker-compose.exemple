@@ -1,0 +1,19 @@
+name: app-ecommerce-stack
+
+services:
+  app-ecommerce:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        API_URL: http://localhost:3000/api
+    image: app-ecommerce-image
+    container_name: app-ecommerce
+    ports:
+      - '4001:8080'
+    networks:
+      - app-ecommerce-network
+
+networks:
+  app-ecommerce-network:
+    driver: bridge
