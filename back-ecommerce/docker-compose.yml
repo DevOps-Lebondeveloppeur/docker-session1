@@ -9,7 +9,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - MONGO_URI=mongodb://mongodb-user:mongodb-pass@mongo-service:27017/
+      - MONGO_URI=mongodb://mongodb-user:mongodb-pass@mongo-service:27017/db-ecommerce?authSource=admin
 
   mongo-express:
     depends_on: 

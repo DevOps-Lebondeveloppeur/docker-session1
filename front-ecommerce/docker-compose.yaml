@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        API_URL: http://localhost:3000
+        API_URL: http://localhost:3000/api
 
     ports:
       - 5000:8080
