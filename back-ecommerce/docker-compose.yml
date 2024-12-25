@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  back-end:
+    depends_on:
+      - mongo-service
+    build: .
+    # command: ["sh", "-c" , "npm run seed:db hello@lebondeveloppeur.com admin123 && npm start"]
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_URI=mongodb://mongodb-user:mongodb-pass@mongo-service:27017/
+
+  mongo-express:
+    depends_on: 
+      - mongo-service
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongodb-user
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongodb-pass
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb-user:mongodb-pass@mongo-service:27017/
+      ME_CONFIG_BASICAUTH: false
+
+
+  mongo-service:
+    container_name: mongo-container
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb-user
+      MONGO_INITDB_ROOT_PASSWORD: mongodb-pass
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
