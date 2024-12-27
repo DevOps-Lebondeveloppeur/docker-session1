@@ -2,6 +2,8 @@ version: "3"
 
 services:
   back-end:
+    env_file:
+      - .env
     depends_on:
       - mongo-service
     build: .
@@ -9,7 +11,9 @@ services:
     ports:
       - 3000:3000
     environment:
-      - MONGO_URI=mongodb://mongodb-user:mongodb-pass@mongo-service:27017/db-ecommerce?authSource=admin
+      - MONGO_URI=mongodb://mongodb-user:mongodb-pass@mongo-container:27017/db-ecommerce?authSource=admin
+    networks:
+      - network
 
   mongo-express:
     depends_on: 
@@ -22,6 +26,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongodb-pass
       ME_CONFIG_MONGODB_URL: mongodb://mongodb-user:mongodb-pass@mongo-service:27017/
       ME_CONFIG_BASICAUTH: false
+    networks:
+      - network
 
 
   mongo-service:
@@ -34,7 +40,13 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongodb-user
       MONGO_INITDB_ROOT_PASSWORD: mongodb-pass
     volumes:
-      - mongo-data:/data/db
+      - mongo-volume:/data/db
+    networks:
+      - network
 
 volumes:
-  mongo-data:
+  mongo-volume:
+
+
+networks:
+  network:
